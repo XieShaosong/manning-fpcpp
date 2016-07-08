@@ -24,7 +24,6 @@ std::string company_t::team_name_for(const person_t &person) const
     return "Team1";
 }
 
-// tag::book[]
 int company_t::count_team_members(const std::string &team_name) const
 {
     return std::count_if(
@@ -36,9 +35,10 @@ int company_t::count_team_members(const std::string &team_name) const
             }
         );
 }
-// end::book[]
 
 int main(int argc, char *argv[])
 {
+    // Also for exercise, create an instance of the company_t object,
+    // and test the count_team_members member function
 }
 

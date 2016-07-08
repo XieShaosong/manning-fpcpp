@@ -2,7 +2,9 @@
 #include <iostream>
 #include <numeric>
 
-// tag::book[]
+// Implementing counting through folding.
+// We have our previous count, and we are returning the new count
+// after checking out the current character.
 int f(int previous_count, char c)
 {
     return (c != '\n') ? previous_count
@@ -17,7 +19,6 @@ int count_lines(const std::string &s)
             f
         );
 }
-// end::book[]
 
 int main(int argc, char *argv[])
 {

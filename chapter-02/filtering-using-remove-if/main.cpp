@@ -1,3 +1,4 @@
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -31,12 +32,11 @@ int main(int argc, char *argv[])
         { "Tom"    , person_t::male   }
     };
 
-// tag::book[]
+    // Filtering with the erase-remove idiom
     people.erase(
         std::remove_if(people.begin(), people.end(),
                        is_not_female),
         people.end());
-// end::book[]
 
     for (const person_t& person: people) {
         std::cout << person.name() << '\n';

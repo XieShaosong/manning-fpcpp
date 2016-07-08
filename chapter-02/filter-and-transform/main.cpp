@@ -1,3 +1,4 @@
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -31,21 +32,19 @@ int main(int argc, char *argv[])
         { "Tom"    , person_t::male   }
     };
 
-// tag::book_filter[]
+    // Filtering by copying
     std::vector<person_t> females;
 
     std::copy_if(people.cbegin(), people.cend(),
                  std::back_inserter(females),
                  is_female);
-// end::book_filter[]
 
-// tag::book_transform[]
     std::vector<std::string> names(females.size());
 
+    // Transforming to get the names
     std::transform(females.cbegin(), females.cend(),
                    names.begin(),
                    name);
-// end::book_transform[]
 
     for (const auto& name: names) {
         std::cout << name << '\n';

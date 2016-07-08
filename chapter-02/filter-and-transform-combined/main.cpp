@@ -1,3 +1,4 @@
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -39,22 +40,13 @@ C prepend(T &&item, C collection)
     return result;
 }
 
-
-/*
-// tag::book_signature[]
-template <typename FilterFunction>
-std::vector<std::string> names_for(
-        const std::vector<person_t> &people,
-        FilterFunction filter)
-// end::book_signature[]
-*/
+// These can be used to activate different implementations:
 
 // #define USE_LOOP_IMPLEMENTATION
 // #define USE_RECURSIVE_IMPLEMENTATION
 #define USE_TAIL_RECURSIVE_IMPLEMENTATION
 
 #ifdef USE_LOOP_IMPLEMENTATION
-// tag::book_loop[]
 template <typename FilterFunction>
 std::vector<std::string> names_for(
         const std::vector<person_t> &people,
@@ -70,11 +62,9 @@ std::vector<std::string> names_for(
 
     return result;
 }
-// end::book_loop[]
 #endif
 
 #ifdef USE_RECURSIVE_IMPLEMENTATION
-// tag::book_recursive[]
 template <typename FilterFunction>
 std::vector<std::string> names_for(
         const std::vector<person_t> &people,
@@ -96,11 +86,9 @@ std::vector<std::string> names_for(
         }
     }
 }
-// end::book_recursive[]
 #endif
 
 #ifdef USE_TAIL_RECURSIVE_IMPLEMENTATION
-// tag::book_tailrecursive_helper[]
 template <typename FilterFunction, typename Iterator>
 std::vector<std::string> names_for_helper(
         Iterator people_begin,
@@ -131,8 +119,7 @@ std::vector<std::string> names_for_helper(
         }
     }
 }
-// end::book_tailrecursive_helper[]
-// tag::book_tailrecursive[]
+
 template <typename FilterFunction, typename Iterator>
 std::vector<std::string> names_for(
         Iterator people_begin,
@@ -144,7 +131,6 @@ std::vector<std::string> names_for(
                                 filter,
                                 {});
 }
-// end::book_tailrecursive[]
 #endif
 
 

@@ -1,6 +1,3 @@
-// vim: set undofile:
-//
-// Program: asd
 
 #include <iostream>
 #include <vector>
@@ -22,7 +19,6 @@ std::unordered_map<T, unsigned int> count_occurences(
 }
 
 
-// tag::reverse_pairs[]
 template <
     typename C,
     typename P1 = typename std::remove_cv<
@@ -44,7 +40,7 @@ std::vector<std::pair<P2, P1>> reverse_pairs(const C &items)
 
     return result;
 }
-// end::reverse_pairs[]
+
 
 int main(int argc, char *argv[])
 {

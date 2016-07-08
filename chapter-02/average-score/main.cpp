@@ -17,6 +17,9 @@ double average_score(const std::vector<int> &scores)
 }
 #endif
 
+// Calculating the average score with std::accumulate.
+// By default, accumulate uses addition as the folding operation
+// over a collection
 double average_score(const std::vector<int> &scores)
 {
     return std::accumulate(
@@ -25,6 +28,8 @@ double average_score(const std::vector<int> &scores)
             ) / (double) scores.size();
 }
 
+// We can provide a custom operation. In this case,
+// we are multiplying all the scores.
 double scores_product(const std::vector<int> &scores)
 {
     return std::accumulate(

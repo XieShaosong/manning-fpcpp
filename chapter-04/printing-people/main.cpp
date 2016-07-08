@@ -1,3 +1,4 @@
+
 #include <string>
 #include <iostream>
 #include <vector>
@@ -7,7 +8,6 @@
 
 #include "../../common/person.h"
 
-// tag::print_person[]
 void print_person(const person_t &person,
                   std::ostream &out,
                   person_t::output_format_t format)
@@ -21,7 +21,6 @@ void print_person(const person_t &person,
 
     }
 }
-// end::print_person[]
 
 int main(int argc, char *argv[])
 {
@@ -38,7 +37,7 @@ int main(int argc, char *argv[])
 
     std::ofstream file("test");
 
-// tag::non_member[]
+    // Passing a non-member function as the function object to std::bind
     std::for_each(people.cbegin(), people.cend(),
             std::bind(print_person,
                       _1,
@@ -52,18 +51,16 @@ int main(int argc, char *argv[])
                       std::ref(file),
                       person_t::full_name
                 ));
-// end::non_member[]
 
-// tag::member[]
+    // Passing a member function pointer to std::bind
     std::for_each(people.cbegin(), people.cend(),
             std::bind(&person_t::print,
                       _1,
                       std::ref(std::cout),
                       person_t::name_only
                 ));
-// end::member[]
 
-// tag::non_member_lambda[]
+    // Passing a lambda function instead of using std::bind
     std::for_each(people.cbegin(), people.cend(),
             [] (const person_t &person) {
                 print_person(person,
@@ -77,7 +74,6 @@ int main(int argc, char *argv[])
                              file,
                              person_t::full_name);
             });
-// end::non_member_lambda[]
 
     return 0;
 }

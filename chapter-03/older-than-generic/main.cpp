@@ -6,7 +6,6 @@
 #include "../../common/person.h"
 
 
-// tag::book[]
 class older_than {
 public:
     older_than(int limit)
@@ -23,7 +22,6 @@ public:
 private:
     int m_limit;
 };
-// end::book[]
 
 
 int main(int argc, char *argv[])
