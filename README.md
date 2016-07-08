@@ -23,3 +23,5 @@ The `3rd-party` directory contains free/libre open source 3rd party libraries us
 
 Most examples are contained in a single `.cpp` file that can be easily executed in any IDE. For people who prefer working in a terminal, or an editor like Vim or Emacs, an example Makefile compatible with the GNU Make command has been provided that can be used to compile the example. The Makefile uses `GCC` as the compiler, but this can be changed by altering the value of the `CXX` variable.
 
+Most of these examples use `C++11` and `C++14`, so you will need a modern compiler in order to compile them. The latest stable versions of GCC or Clang are recommended.
+
