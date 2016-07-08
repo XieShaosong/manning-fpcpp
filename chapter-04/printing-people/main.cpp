@@ -5,7 +5,7 @@
 #include <functional>
 #include <fstream>
 
-#include "../common/person.h"
+#include "../../common/person.h"
 
 // tag::print_person[]
 void print_person(const person_t &person,

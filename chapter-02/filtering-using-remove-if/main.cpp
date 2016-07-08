@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "../common/person.h"
+#include "../../common/person.h"
 
 std::string name(const person_t &person)
 {

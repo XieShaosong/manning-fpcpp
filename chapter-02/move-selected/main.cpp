@@ -3,7 +3,7 @@
 #include <vector>
 #include <algorithm>
 
-#include "../common/person.h"
+#include "../../common/person.h"
 
 typedef std::pair<std::string, bool> list_item;
 
