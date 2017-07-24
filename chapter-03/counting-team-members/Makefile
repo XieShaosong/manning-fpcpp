@@ -1,6 +1,6 @@
 PROGRAM   = main
 CXX       = g++
-CXXFLAGS  = -g -std=c++0x -Wall
+CXXFLAGS  = -g -std=c++14 -Wall
 
 $(PROGRAM): main.o
 	$(CXX) -o $(PROGRAM) main.o
