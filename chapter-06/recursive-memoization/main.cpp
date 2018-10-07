@@ -10,7 +10,11 @@
 
 namespace detail {
 
-// tag::book_helper[]
+// Memoization for recursive functions is a bit more complex -- see
+// section 6,3
+
+class null_param {};
+
 template <class Sig, class F>
 class memoize_helper;
 
@@ -22,18 +26,25 @@ private:
         = std::tuple<std::decay_t<Args>...>;
 
     function_type f;
-    mutable std::map<args_tuple_type, Result> m_cache;       // <1>
-    mutable std::recursive_mutex m_cache_mutex;              // <1>
+
+    // Defines the cache, and, because it’s  mutable, synchronizes
+    // all the changes
+    mutable std::map<args_tuple_type, Result> m_cache;
+    mutable std::recursive_mutex m_cache_mutex;
 
 public:
+    // The constructors need to initialize the wrapped function.
+    // You could made copy-constructor copy the cached values as well,
+    // but that’s not necessary.
+
     template <typename Function>
-    memoize_helper(int, Function&& f)                        // <2>
-        : f(f)                                               // <2>
+    memoize_helper(Function&& f, null_param)
+        : f(f)
     {
     }
 
-    memoize_helper(const memoize_helper& other)              // <2>
-        : f(other.f)                                         // <2>
+    memoize_helper(const memoize_helper& other)
+        : f(other.f)
     {
     }
 
@@ -43,41 +54,42 @@ public:
         std::unique_lock<std::recursive_mutex>
                 lock{m_cache_mutex};
 
-        const auto args_tuple =                              // <3>
-            std::make_tuple(args...);                        // <3>
-        const auto cached = m_cache.find(args_tuple);        // <3>
+        // Searches for the cached value
+        const auto args_tuple =
+            std::make_tuple(args...);
+        const auto cached = m_cache.find(args_tuple);
 
+        //  If the cached value is found, returns it without calling f
         if (cached != m_cache.end()) {
-            return cached->second;                           // <4>
+            return cached->second;
 
         } else {
-            auto&& result = f(                               // <5>
-                    *this,                                   // <5>
-                    std::forward<InnerArgs>(args)...);       // <5>
-            m_cache[args_tuple] = result;                    // <5>
-            return result;                                   // <5>
+            // If the cached value isn’t found, calls f and stores
+            // the result. Passes *this as the first argument: the
+            // function to be used for the recursive call.
+            auto&& result = f(
+                    *this,
+                    std::forward<InnerArgs>(args)...);
+            m_cache[args_tuple] = result;
+            return result;
         }
     }
 };
-// end::book_helper[]
 
 } // namespace detail
 
 using detail::memoize_helper;
 
-// tag::book_maker[]
 template <class Sig, class F>
 memoize_helper<Sig, std::decay_t<F>>
 make_memoized_r(F&& f)
 {
-    return {0, std::forward<F>(f)};
+    return {std::forward<F>(f), detail::null_param{}};
 }
-// end::book_maker[]
 
 
 int main(int argc, char* argv[])
 {
-// tag::book_demo[]
     auto fibmemo = make_memoized_r<
                 unsigned int(unsigned int)>(
         [](auto& fib, unsigned int n) {
@@ -86,7 +98,6 @@ int main(int argc, char* argv[])
                  : n == 1 ? 1
                  : fib(n - 1) + fib(n - 2);
         });
-// end::book_demo[]
 
     std::cout << "15! = " << fibmemo(15) << std::endl;       // <1>
     std::cout << "15! = " << fibmemo(15) << std::endl;       // <2>

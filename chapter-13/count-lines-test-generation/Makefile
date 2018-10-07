@@ -1,6 +1,8 @@
 PROGRAM   = main
 CXX       = g++
-CXXFLAGS  = -g -std=c++17 -Wall -I../../3rd-party/ericniebler/range-v3/include -I../../3rd-party/philsquared/catch/include
+CXXFLAGS  = -g -std=c++17 -Wall \
+            -I../../3rd-party/ericniebler/range-v3/include \
+            -I../../3rd-party/catchorg/Catch2/single_include
 
 $(PROGRAM): main.o
 	$(CXX) -o $(PROGRAM) main.o

@@ -5,7 +5,8 @@
 
 #include "../../common/person.h"
 
-
+// Implements a generic function object that compares an object's age
+// against a predefined integer limit (section 3.1.4)
 class older_than {
 public:
     older_than(int limit)
@@ -13,6 +14,9 @@ public:
     {
     }
 
+    // Defining a call operator as a template function,
+    // we will create a generic function object
+    // that deduces the type of its argument when invoked
     template <typename T>
     bool operator() (T &&object) const
     {

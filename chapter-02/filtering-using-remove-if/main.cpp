@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
         { "Tom"    , person_t::male   }
     };
 
-    // Filtering with the erase-remove idiom
+    // Filtering with the erase-remove idiom (section 2.2.5, page 35)
     people.erase(
         std::remove_if(people.begin(), people.end(),
                        is_not_female),

@@ -7,6 +7,11 @@
 #include <range/v3/view/transform.hpp>
 #include <range/v3/view/filter.hpp>
 
+
+// We can also deal with optional values in monadic style. We can chain
+// operations that return optional values with monadic binding --
+// the composition of transform + join
+
 std::optional<std::string> user_full_name(const std::string& login)
 {
     return {};

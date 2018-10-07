@@ -7,6 +7,11 @@
 #include <range/v3/view/transform.hpp>
 #include <range/v3/view/filter.hpp>
 
+// We can define a range facade that allows using std::optional
+// as if it was a proper range (as in range-v3 library).
+// If the optional is empty, the range is empty. If it contains
+// a value, it generates a range that contains a single value.
+
 template <typename T1, typename F>
 auto transform(const std::optional<T1> &opt, F f)
     -> decltype(f(opt.value()))

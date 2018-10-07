@@ -15,7 +15,7 @@ using namespace ranges::v3;
 #include <time.h>
 
 #define CATCH_CONFIG_MAIN
-#include <catch.hpp>
+#include <catch2/catch.hpp>
 
 
 template < typename Iter

@@ -5,7 +5,8 @@
 #include <string>
 #include <tuple>
 
-// tag::book_struct[]
+// Using expression templates to concatenate strings
+
 template <typename... Strings>
 class lazy_string_concat_helper;
 
@@ -13,8 +14,11 @@ template <typename LastString, typename... Strings>
 class lazy_string_concat_helper<LastString,
                                 Strings...> {
 private:
-    LastString data;                                      // <1>
-    lazy_string_concat_helper<Strings...> tail;           // <2>
+    // Stores the copy of the original string
+    LastString data;
+
+    // Stores the structure that contains other strings
+    lazy_string_concat_helper<Strings...> tail;
 
 public:
     lazy_string_concat_helper(
@@ -25,43 +29,49 @@ public:
     {
     }
 
-    int size() const                                      // <3>
-    {                                                     // <3>
-        return data.size() + tail.size();                 // <3>
-    }                                                     // <3>
+    // Calculates the size of all strings combined
+    int size() const
+    {
+        return data.size() + tail.size();
+    }
 
+    // The structure stores strings in reverse order: the data
+    // member variable contains the string that comes last,
+    // so it needs to go to the end of the buffer.
     template <typename It>
     void save(It end) const
-    {                                                     // <4>
-        const auto begin = end - data.size();             // <4>
-        std::copy(data.cbegin(), data.cend(),             // <4>
-                  begin);                                 // <4>
-        tail.save(begin);                                 // <4>
+    {
+        const auto begin = end - data.size();
+        std::copy(data.cbegin(), data.cend(),
+                  begin);
+        tail.save(begin);
     }
 
+    // When you want to convert the expression definition into a real string,
+    // allocate enough memory and start copying the strings into it.
     operator std::string() const
     {
-        std::string result(size(), '\0');                 // <5>
-        save(result.end());                               // <5>
-        return result;                                    // <5>
+        std::string result(size(), '\0');
+        save(result.end());
+        return result;
     }
 
+    // Creates a new instance of the structure with one string added to it
     lazy_string_concat_helper<std::string,
                               LastString,
                               Strings...>
-    operator+(const std::string& other) const             // <6>
-    {                                                     // <6>
-        return lazy_string_concat_helper                  // <6>
-               <std::string, LastString, Strings...>(     // <6>
-                   other,                                 // <6>
-                   *this                                  // <6>
-               );                                         // <6>
+    operator+(const std::string& other) const
+    {
+        return lazy_string_concat_helper
+               <std::string, LastString, Strings...>(
+                   other,
+                   *this
+               );
     }
 };
-// end::book_struct[]
 
 
-// tag::book_struct_base[]
+
 template <>
 class lazy_string_concat_helper<> {
 public:
@@ -88,19 +98,21 @@ public:
             );
     }
 };
-// end::book_struct_base[]
 
-// tag::book_struct_demo[]
-lazy_string_concat_helper<> lazy_concat;           // <1>
+
+lazy_string_concat_helper<> lazy_concat;
 
 int main(int argc, char* argv[])
 {
     std::string name = "Jane";
     std::string surname = "Smith";
 
-    const std::string fullname =                   // <1>
-        lazy_concat + surname + ", " + name;       // <1>
+    // You can’t overload the operator+ on std::string, so use a small
+    // trick to force the use of the concatenation structure by appending
+    // to an instance of it.
+    const std::string fullname =
+        lazy_concat + surname + ", " + name;
 
     std::cout << fullname << std::endl;
 }
-// end::book_struct_demo[]
+

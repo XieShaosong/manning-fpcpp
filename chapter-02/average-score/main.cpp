@@ -20,6 +20,7 @@ double average_score(const std::vector<int> &scores)
 // Calculating the average score with std::accumulate.
 // By default, accumulate uses addition as the folding operation
 // over a collection
+// (see section 2.2.1)
 double average_score(const std::vector<int> &scores)
 {
     return std::accumulate(

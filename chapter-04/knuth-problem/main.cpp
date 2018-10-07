@@ -19,6 +19,7 @@ std::unordered_map<T, unsigned int> count_occurences(
 }
 
 
+// Reverses all pairs in a collection (section 4.4.1)
 template <
     typename C,
     typename P1 = typename std::remove_cv<
@@ -29,6 +30,8 @@ std::vector<std::pair<P2, P1>> reverse_pairs(const C &items)
 {
     std::vector<std::pair<P2, P1>> result(items.size());
 
+    // For each pair (first, second) in the source collection,
+    // put (second, first) into the destination collection
     std::transform(
         std::begin(items), std::end(items),
         std::begin(result),

@@ -4,12 +4,12 @@
 #include <string>
 
 // JSON library
-#include <json.hpp>
+#include <nlohmann/json.hpp>
 using json = nlohmann::json;
 
 // Catch library
 #define CATCH_CONFIG_MAIN
-#include <catch.hpp>
+#include <catch2/catch.hpp>
 
 // Utilities
 #include "expected.h"

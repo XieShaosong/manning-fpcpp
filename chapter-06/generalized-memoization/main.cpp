@@ -6,29 +6,38 @@
 #include <tuple>
 #include <unordered_map>
 
-// tag::book[]
+// see section 6.3 and listing 6.7
 template <typename Result, typename... Args>
 auto make_memoized(Result (*f)(Args...))
 {
-    std::map<std::tuple<Args...>, Result> cache;            // <1>
+    // Creates a cache that maps tuples of arguments to the calculated
+    // results. If you wanted to use this in a multithreaded environment,
+    // you’d need to synchronize the changes to it with a mutex,
+    // as in listing 6.1.
+    std::map<std::tuple<Args...>, Result> cache;
 
     return [f, cache](Args... args) mutable -> Result
     {
-        const auto args_tuple =                             // <2>
-            std::make_tuple(args...);                       // <2>
-        const auto cached = cache.find(args_tuple);         // <2>
+        // Lambda that gets the arguments and checks whether the result is
+        // already cached
+        const auto args_tuple =
+            std::make_tuple(args...);
+        const auto cached = cache.find(args_tuple);
 
         if (cached == cache.end()) {
-            auto result = f(args...);                       // <3>
-            cache[args_tuple] = result;                     // <3>
-            return result;                                  // <3>
+            // In case of a cache miss, calls  the function and stores the
+            // result to the cache
+            auto result = f(args...);
+            cache[args_tuple] = result;
+            return result;
 
         } else {
-            return cached->second;                          // <4>
+            // If the result is found in the cache, returns it to the caller
+            return cached->second;
         }
     };
 }
-// end::book[]
+
 
 unsigned int fib(unsigned int n)
 {
@@ -41,12 +50,10 @@ unsigned int fib(unsigned int n)
 
 int main(int argc, char* argv[])
 {
-// tag::book_demo[]
     auto fibmemo = make_memoized(fib);
 
     std::cout << "15! = " << fibmemo(15) << std::endl;      // <1>
     std::cout << "15! = " << fibmemo(15) << std::endl;      // <2>
-// end::book_demo[]
 
     return 0;
 }

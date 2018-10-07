@@ -11,6 +11,8 @@
 
 
 #ifdef ORDINARY_FIB
+// Ordinary recursive implementation of the Fibonacci function.
+// This implementation is extremely slow -- O(2^n) complexity
 unsigned int fib(unsigned int n)
 {
     return n == 0 ? 0 :
@@ -23,6 +25,8 @@ unsigned int fib(unsigned int n)
 #ifdef CACHED_FIB
 std::vector<unsigned int> cache{0, 1};
 
+// Implementation of the Fibonacci function which caches all
+// previously calculated results
 unsigned int fib(unsigned int n)
 {
     if (cache.size() > n) {
@@ -39,6 +43,9 @@ unsigned int fib(unsigned int n)
 
 
 #ifdef OPTIMIZED_CACHED_FIB
+
+// In order to calculate Fibonacci numbers, we just need to cache the
+// last two results
 class fib_cache {
 public:
     fib_cache()

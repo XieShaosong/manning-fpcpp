@@ -32,16 +32,18 @@ int main(int argc, char *argv[])
         { "Tom"    , person_t::male   }
     };
 
-    // Filtering by copying
+    // Filtering the collection by copying (see section 2.2.5)
     std::vector<person_t> females;
 
+    // The std::copy_if algorithm copies items that satisfy the
+    // is_female predicate into the destination collection
     std::copy_if(people.cbegin(), people.cend(),
                  std::back_inserter(females),
                  is_female);
 
+    // Transforming to get the names
     std::vector<std::string> names(females.size());
 
-    // Transforming to get the names
     std::transform(females.cbegin(), females.cend(),
                    names.begin(),
                    name);

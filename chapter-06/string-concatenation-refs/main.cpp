@@ -99,6 +99,9 @@ lazy_string_concat_helper<> lazy_concat;
 
 int main(int argc, char* argv[])
 {
+    // When using `auto` and expression templates that store references
+    // to values that can change over time, there can be some unexpected
+    // consequences.
     std::string name = "Jane";
     std::string surname = "Smith";
 
@@ -107,5 +110,7 @@ int main(int argc, char* argv[])
 
     name = "John";
 
+    // The fullname is defined before the `name` variable was changed,
+    // but the concatenation is performed after the change
     std::cout << fullname << std::endl;
 }

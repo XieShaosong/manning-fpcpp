@@ -15,9 +15,12 @@ template <typename... Fs> overloaded(Fs...) -> overloaded<Fs...>;
 
 class program_t {
 private:
+    // The initial state does not need to contain anything
     class init_t {
     };
 
+    // The running state contains the current count and the file
+    // that we are reading from
     class running_t {
     public:
         running_t(const std::string& file_name)
@@ -42,6 +45,7 @@ private:
         std::ifstream m_file;
     };
 
+    // The finished state contains only the final count
     class finished_t {
     public:
         finished_t(unsigned count = 0)
@@ -84,6 +88,10 @@ public:
 
     void counting_finished()
     {
+        // One of the ways to work with variants (section 9.1.2) is
+        // to use the std::get_if function which returns a pointer
+        // to the data stored in the variant if it contains a value
+        // of the requested type. Otherwise, it returns nullptr
         const auto *state = std::get_if<running_t>(&m_state);
 
         assert(state != nullptr);
@@ -93,6 +101,13 @@ public:
 
     unsigned count() const
     {
+        // Another approach is to use the std::visit function
+        // which executes a given function on the value stored
+        // inside of the variant.
+        //
+        // The `overloaded` helper function can be used to combine
+        // several lambdas of different signatures into a single function
+        // object
         return std::visit(overloaded {
                     [] (init_t) {
                         return (unsigned)0;
