@@ -1,6 +1,8 @@
 #ifndef PERSON_H
 #define PERSON_H
 
+#include <string>
+
 class person_t {
 public:
     enum gender_t {
