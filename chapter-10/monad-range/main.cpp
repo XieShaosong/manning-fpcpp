@@ -8,6 +8,7 @@
 #include <filesystem>
 
 #include <range/v3/view/transform.hpp>
+#include <range/v3/view/filter.hpp>
 #include <range/v3/view/join.hpp>
 
 using namespace ranges::v3;
@@ -35,7 +36,7 @@ decltype(auto) mbind(F&& f)
 }
 
 
-auto files_in_dir(const std::filesystem::directory_entry &dir)
+auto files_in_dir(const fs::directory_entry &dir)
 {
     return make_iterator_range(fs::directory_iterator{dir.path()},
                                fs::directory_iterator{});
@@ -46,7 +47,8 @@ int main(int argc, char *argv[])
 {
     auto directories =
         ranges::make_iterator_range(fs::directory_iterator{".."},
-                                    fs::directory_iterator{});
+                                    fs::directory_iterator{})
+            | view::filter([] (auto&& item) { return item.is_directory(); });
 
     std::cout << "Listing files with xs | mbind(f)" << std::endl;
     for (const auto& file: directories | mbind(files_in_dir)) {
